@@ -1,4 +1,4 @@
-add_library(apriltags
+add_library(apriltags-cpp
   CameraUtil.cpp
   DebugImage.cpp
   Geometry.cpp 
@@ -11,9 +11,7 @@ add_library(apriltags
   UnionFindSimple.cpp
 )
 
-set(AT_LIBS apriltags ${OPENCV_LDFLAGS})
-
-target_link_libraries(apriltags ${AT_LIBS})
+set(AT_LIBS apriltags-cpp ${OPENCV_LDFLAGS})
 
 add_executable(camtest camtest.cpp)
 target_link_libraries(camtest ${AT_LIBS})
@@ -36,4 +34,21 @@ if (CAIRO_FOUND)
   add_executable(maketags maketags.cpp)
   target_link_libraries(maketags ${CAIRO_LIBRARIES} ${AT_LIBS} ${CAIRO_LIBS})
 
-endif() 
+endif()
+
+INSTALL(TARGETS apriltags-cpp
+        ARCHIVE DESTINATION lib)
+INSTALL(FILES
+        AprilTypes.h
+        CameraUtil.h
+        DebugImage.h
+        Geometry.h
+        GrayModel.h
+        MathUtil.h
+        Profiler.h
+        Refine.h
+        TagDetection.h
+        TagDetector.h
+        TagFamily.h
+        UnionFindSimple.h
+        DESTINATION include/apriltags-cpp)

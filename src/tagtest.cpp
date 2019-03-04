@@ -130,7 +130,28 @@ int main(int argc, char** argv) {
 
   TagTestOptions opts = parse_options(argc, argv);
 
+#if 0
   TagFamily family(opts.family_str);
+#else
+  const TagFamily::code_t tag196h1[] =
+  {
+      0x0000L
+  };
+
+  TagFamily family
+  (
+      14*14,
+      1,
+      1,
+      tag196h1
+  );
+
+  opts.params.minMag = 0.04f;
+  opts.params.maxEdgeCost = 10.f * float(M_PI) / 180.f;
+  opts.params.minimumSegmentSize = 100;
+  opts.params.thetaThresh = 20.f * float(M_PI) / 180.f;
+  opts.params.magThresh = 100;
+#endif
 
   if (opts.error_fraction >= 0 && opts.error_fraction < 1) {
     family.setErrorRecoveryFraction(opts.error_fraction);

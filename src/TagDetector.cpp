@@ -1101,10 +1101,10 @@ void TagDetector::getQuads_AT(const Images& images,
 
       // merge these two clusters?
       at::real costab = (tmaxab - tminab);
-      if (costab <= (std::min(costa, costb) + params.thetaThresh/(sza+szb)) &&
+      if (costab <= (std::min(costa, costb) + params.thetaThresh/*/(sza+szb)*/) &&
           (mmaxab-mminab) <= (std::min(mmax[ida]-mmin[ida],
                                        mmax[idb]-mmin[idb]) +
-                              params.magThresh/(sza+szb))) {
+                              params.magThresh/*/(sza+szb)*/)) {
 
         int idab = uf.connectNodes(ida, idb);
 
@@ -1312,7 +1312,7 @@ void TagDetector::getQuads_AT(const Images& images,
 
     Segment* parent = segments[i];
 
-    gridder.find(parent->x1, parent->y1, 0.5*parent->length, findResults);
+    gridder.find(parent->x1, parent->y1, 10 /*0.5*parent->length*/, findResults);
 
     for (size_t j=0; j<findResults.size(); ++j) {
       
@@ -1906,7 +1906,7 @@ bool TagDetector::decodeQuad(const Images& images,
   // XXX: todo: multiple samples within each cell and vote?
   for (at::uint iy = tagFamily.d-1; iy < tagFamily.d; iy--) {
 
-    if (debug) { std::cout << "  "; }
+    if (debug) { std::cout << ""; }
 
     for (at::uint ix = 0; ix < tagFamily.d; ix++) {
 
@@ -1938,7 +1938,8 @@ bool TagDetector::decodeQuad(const Images& images,
       }
 
       if (debug) {
-        std::cout << ((v > threshold) ? "##" : "  ");
+        printf(((v > threshold) ? " @\t" : " #\t"));
+        //std::cout << ((v > threshold) ? " " : "#");
       }
 
     }
